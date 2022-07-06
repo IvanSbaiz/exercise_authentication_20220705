@@ -1,11 +1,11 @@
 package repository;
 
 import dataobject.User;
+import exceptions.UsernameAlreadyExistsException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import utils.Role;
 
 public class UserRepository implements IUserRepository {
 
@@ -13,8 +13,6 @@ public class UserRepository implements IUserRepository {
 
   public UserRepository() {
     this.database = new HashMap<>();
-    User user = new User("", "", "", "admin", "password", Role.ADMIN);
-    database.put(user.getUsername(), user);
   }
 
   @Override
@@ -23,13 +21,16 @@ public class UserRepository implements IUserRepository {
   }
 
   @Override
-  public User insert(User user) {
-    return null;
+  public User insert(User user) throws UsernameAlreadyExistsException {
+    if (!database.containsKey(user.getUsername())) {
+      return database.put(user.getUsername(), user);
+    }
+    throw new UsernameAlreadyExistsException();
   }
 
   @Override
   public User update(User user) {
-    return null;
+    return database.put(user.getUsername(), user);
   }
 
   @Override

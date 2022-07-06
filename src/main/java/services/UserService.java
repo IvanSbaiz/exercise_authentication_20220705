@@ -2,6 +2,7 @@ package services;
 
 import dataobject.User;
 import exceptions.ForbiddenOperationException;
+import exceptions.UsernameAlreadyExistsException;
 import java.util.Collection;
 import java.util.Optional;
 import repository.IUserRepository;
@@ -37,7 +38,8 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public User insert(User authenticatedUser, User user) throws ForbiddenOperationException {
+  public User insert(User authenticatedUser, User user)
+      throws ForbiddenOperationException, UsernameAlreadyExistsException {
     validateAdminOperation(authenticatedUser);
     return userRepository.insert(user);
   }
